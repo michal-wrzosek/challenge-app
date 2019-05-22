@@ -1,12 +1,12 @@
-import styled, { css } from "styled-components";
-import { themeGet, is } from "styled-system";
+import styled, { css } from 'styled-components';
+import { themeGet } from 'styled-system';
 
-import { applyElevationCss } from "../../styles/applyElevation";
-import { transition } from "../../styles/transitions";
+import { applyElevationCss } from '../../styles/applyElevation';
+import { transition } from '../../styles/transitions';
 
 export interface ButtonProps {
   disabled?: boolean;
-};
+}
 
 export const ButtonPrimary = styled.button<ButtonProps>`
   ${applyElevationCss(1)};
@@ -26,8 +26,11 @@ export const ButtonPrimary = styled.button<ButtonProps>`
     transform: translateY(-2px);
   }
 
-  ${({ disabled }) => !!disabled ? css`
-    background-color: ${themeGet('button.primary.bgColorDisabled')};
-    color: ${themeGet('button.primary.colorDisabled')};
-  ` : css``};
+  ${({ disabled }) =>
+    !!disabled
+      ? css`
+          background-color: ${themeGet('button.primary.bgColorDisabled')};
+          color: ${themeGet('button.primary.colorDisabled')};
+        `
+      : css``};
 `;
