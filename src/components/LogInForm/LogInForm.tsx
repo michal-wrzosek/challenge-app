@@ -9,7 +9,7 @@ type Errors = {
 interface LogInFormProps {
   isLoading: boolean;
   errorMessage?: string;
-  authenticate: (email: string, password: string) => Promise<any>;
+  authenticate: (email: string, password: string) => any;
 }
 
 const MIN_PASSWORD_LENGTH = 8;
