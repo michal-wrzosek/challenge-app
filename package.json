@@ -36,6 +36,11 @@
     ]
   },
   "devDependencies": {
-    "@types/styled-components": "^4.1.15"
+    "@types/enzyme": "^3.9.2",
+    "@types/styled-components": "^4.1.15",
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.13.1",
+    "jest-enzyme": "^7.0.2",
+    "react-test-renderer": "^16.8.6"
   }
 }
