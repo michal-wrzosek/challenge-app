@@ -1,12 +1,15 @@
 # challenge-app
 Demo SPA connected to REST API with JWT Auth
 
+<img src="/screenshot.png" width="200px"></img>
+
+**Table of contents:**
 - [Deployment](#deployment)
 - [CI - Travis](#continuous_integration)
 - [Tech stack](#tech_stack)
 
 ## Deployment
-This app is deployed via Heroku. Master branch is always automatically deplyed to "staging". Then manuall we you can promote staging into "production". Every PR triggers Review Apps to start deploying.
+This app is deployed via Heroku. Master branch is always automatically deplyed to "staging". Then you can manually promote "staging" to "production". Every PR triggers "Review Apps" to start deploying.
 
 **Production:** *NOT YET DEPLOYED*
 **Staging:** https://challenge-app-spa-staging.herokuapp.com/
