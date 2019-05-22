@@ -2,6 +2,7 @@ import React from 'react';
 
 import { AuthenticationContext } from '../../context/AuthenticationContext/AuthenticationContext';
 import { useAuthenticationSubscription } from '../../hooks/useAuthentication';
+import { LogInScreen } from '../../components/LogInScreen/LogInScreen';
 import { LogInForm } from '../../components/LogInForm/LogInForm';
 
 export const LoginScreenContainer: React.FC = ({ children }) => {
@@ -11,7 +12,6 @@ export const LoginScreenContainer: React.FC = ({ children }) => {
   const [auth, setAuth] = React.useState(authenticationSubject.getValue());
 
   useAuthenticationSubscription(auth => {
-    console.log('useAuthenticationSubscription');
     setAuth(auth);
   }, []);
 
@@ -21,11 +21,13 @@ export const LoginScreenContainer: React.FC = ({ children }) => {
 
   if (!token) {
     return (
-      <LogInForm
-        isLoading={isLoading}
-        authenticate={authenticate}
-        errorMessage={errorMessage}
-      />
+      <LogInScreen>
+        <LogInForm
+          isLoading={isLoading}
+          authenticate={authenticate}
+          errorMessage={errorMessage}
+        />
+      </LogInScreen>
     );
   }
 
