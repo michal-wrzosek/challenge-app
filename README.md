@@ -1,3 +1,42 @@
+# challenge-app
+Demo SPA connected to REST API with JWT Auth
+
+<img src="/screenshot.png" width="200px"></img>
+
+**Table of contents:**
+- [Deployment](#deployment)
+- [CI - Travis](#continuous_integration)
+- [Tech stack](#tech_stack)
+
+## Deployment
+This app is deployed via Heroku. Master branch is always automatically deplyed to "staging". Then you can manually promote "staging" to "production". Every PR triggers "Review Apps" to start deploying.
+
+**Production:** *NOT YET DEPLOYED*
+**Staging:** https://challenge-app-spa-staging.herokuapp.com/
+**Review apps**: Created ad hoc
+`https://challenge-app-spa-staging-pr-<PR_NR_HERE>.herokuapp.com`
+
+## Continuous Integration
+Every PR triggers Travis that runs unit tests to ensure that only healthy code will be deployed to master.
+
+https://travis-ci.com/michal-wrzosek/challenge-app
+
+## Tech Stack
+- Create React App v3
+- Typescript
+- eslint + prettier
+- jest + enzyme
+- styled components + styled system
+- React hooks + Subjects/Observables (reactive programming)
+- no Redux
+- Heroku + mars/create-react-app buildpack
+- Travis CI
+- GitHub
+- husky for git hooks
+- VSCode (suggested IDE)
+
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
@@ -5,40 +44,4 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 In the project directory, you can run:
 
 ### `npm start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
-
 ### `npm test`
-
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
