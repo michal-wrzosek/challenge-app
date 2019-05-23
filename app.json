@@ -3,5 +3,13 @@
     {
       "url": "mars/create-react-app"
     }
-  ]
+  ],
+  "env": {
+    "NODE_ENV": {
+      "required": true
+    },
+    "REACT_APP_API": {
+      "required": true
+    }
+  }
 }
