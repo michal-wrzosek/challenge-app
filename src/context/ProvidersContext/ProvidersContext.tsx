@@ -1,6 +1,8 @@
 import React from 'react';
 import { US_STATES } from '../../types/USStates';
 import { Subject } from '../../util/reactive/Subject';
+import { API } from '../../configuration/envs';
+import { AuthenticationContext } from '../AuthenticationContext/AuthenticationContext';
 
 export type Provider = {
   _id: string;
@@ -70,29 +72,74 @@ const providersSubject = new Subject<ProvidersSubjectData>({
   isLoading: false,
 });
 
+const fetchProviders = async (
+  searchState: ProvidersSearchState,
+  token: string
+) => {
+  try {
+    const response = await fetch(`${API}/api/v1/providers`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const {
+      data: { providers },
+    } = await response.json();
+    return { providers: providers as Provider[] };
+  } catch (error) {
+    console.error(error);
+    return { providers: [] as Provider[] };
+  }
+};
+
 export const ProvidersProvider: React.FC = ({ children }) => {
   const isFirst = React.useRef(true);
+  const { authenticationSubject } = React.useContext(AuthenticationContext);
 
   React.useEffect(() => {
     providersSubject.next({
       providers: [],
       searchState: {},
-      isLoading: false,
+      isLoading: true,
     });
+
+    const { token } = authenticationSubject.getValue();
+
+    fetchProviders({}, token as string)
+      .then(response => {
+        const { providers } = response;
+        providersSubject.next({ providers, searchState: {}, isLoading: false });
+      })
+      .catch(error => {
+        console.error(error);
+        providersSubject.next({
+          providers: [],
+          searchState: {},
+          isLoading: false,
+        });
+      });
 
     isFirst.current = false;
 
     return () => {
       providersSubject.destroy();
     };
-  }, [isFirst]);
+  }, [isFirst, authenticationSubject]);
 
   const providersSearch: ProvidersSearchFunc = async stateFunc => {
     const { searchState } = providersSubject.getValue();
     const newSearchState = stateFunc(searchState);
+
     providersSubject.next({ providers: [], searchState, isLoading: true });
 
-    // TODO: Fetch
+    const { token } = authenticationSubject.getValue();
+
+    const { providers } = await fetchProviders(newSearchState, token as string);
+
+    providersSubject.next({ providers, searchState, isLoading: false });
   };
 
   return (

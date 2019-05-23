@@ -1,9 +1,11 @@
 import React from 'react';
+import { ProvidersProvider } from '../../context/ProvidersContext/ProvidersContext';
+import { ProvidersListContainer } from '../ProvidersListContainer/ProvidersListContainer';
+import { ProvidersSearchContainer } from '../ProvidersSearchContainer/ProvidersSearchContainer';
 
 export const ProvidersPageContainer = () => (
-  <div>
-    <ul>
-      <li>Test</li>
-    </ul>
-  </div>
+  <ProvidersProvider>
+    <ProvidersSearchContainer />
+    <ProvidersListContainer />
+  </ProvidersProvider>
 );
