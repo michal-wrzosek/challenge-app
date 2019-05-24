@@ -7,22 +7,7 @@ import {
   FetchAPIFunc,
 } from '../AuthenticationContext/AuthenticationContext';
 import { PaginationType } from '../../types/PaginationType';
-
-export type Provider = {
-  _id: string;
-  providerId: string;
-  name: string;
-  street: string;
-  city: string;
-  state: string;
-  zipcode: string;
-  hospitalReferralRegionDesc: string;
-  totalDischarges: number;
-  avgCoveredCharges: number;
-  avgTotalPayments: number;
-  avgMedicarePayments: number;
-  drgDefinition: string;
-};
+import { ProviderType } from '../../types/ProviderType';
 
 export interface ProvidersProjection {
   providerId?: boolean;
@@ -40,20 +25,20 @@ export interface ProvidersProjection {
 }
 
 export interface ProvidersSearchState {
-  max_discharges?: number;
-  min_discharges?: number;
-  max_average_covered_charges?: number;
-  min_average_covered_charges?: number;
-  max_average_medicare_payments?: number;
-  min_average_medicare_payments?: number;
-  state?: US_STATES;
+  max_discharges?: number | null;
+  min_discharges?: number | null;
+  max_average_covered_charges?: number | null;
+  min_average_covered_charges?: number | null;
+  max_average_medicare_payments?: number | null;
+  min_average_medicare_payments?: number | null;
+  state?: US_STATES | null;
   projection?: ProvidersProjection;
-  page?: number;
-  limit?: number;
+  page?: number | null;
+  limit?: number | null;
 }
 
 export interface ProvidersSubjectData {
-  providers: Provider[];
+  providers: ProviderType[];
   pagination?: PaginationType;
   searchState: ProvidersSearchState;
   isLoading: boolean;
@@ -66,7 +51,7 @@ export type ProvidersSearchFunc = (
 
 export type ProvidersGetAllPayload = {
   data: {
-    providers: Provider[];
+    providers: ProviderType[];
   };
   pagination: PaginationType;
 };
@@ -91,15 +76,43 @@ const fetchProviders = async (
   fetchAPI: FetchAPIFunc
 ) => {
   try {
-    const { page } = searchState;
-    const query = { page };
+    const {
+      min_discharges,
+      max_discharges,
+      min_average_covered_charges,
+      max_average_covered_charges,
+      min_average_medicare_payments,
+      max_average_medicare_payments,
+      state,
+      page,
+      limit,
+    } = searchState;
+    const query = {
+      ...(min_discharges !== null ? { min_discharges } : {}),
+      ...(max_discharges !== null ? { max_discharges } : {}),
+      ...(max_average_covered_charges !== null
+        ? { max_average_covered_charges }
+        : {}),
+      ...(min_average_covered_charges !== null
+        ? { min_average_covered_charges }
+        : {}),
+      ...(max_average_medicare_payments !== null
+        ? { max_average_medicare_payments }
+        : {}),
+      ...(min_average_medicare_payments !== null
+        ? { min_average_medicare_payments }
+        : {}),
+      ...(state !== null ? { state } : {}),
+      ...(page !== null ? { page } : {}),
+      ...(limit !== null ? { limit } : {}),
+    };
     const response = await fetchAPI<ProvidersGetAllPayload>(
       `/api/v1/providers`,
       {},
       query
     );
 
-    if (!response) return { providers: [] as Provider[] };
+    if (!response) return { providers: [] as ProviderType[] };
 
     const {
       data: { providers },
@@ -108,7 +121,7 @@ const fetchProviders = async (
     return { providers, pagination };
   } catch (error) {
     console.error(error);
-    return { providers: [] as Provider[] };
+    return { providers: [] as ProviderType[] };
   }
 };
 
@@ -152,7 +165,11 @@ export const ProvidersProvider: React.FC = ({ children }) => {
     const { searchState } = providersSubject.getValue();
     const newSearchState = stateFunc(searchState);
 
-    providersSubject.next({ providers: [], searchState, isLoading: true });
+    providersSubject.next({
+      providers: [],
+      searchState: newSearchState,
+      isLoading: true,
+    });
 
     const { providers, pagination } = await fetchProviders(
       newSearchState,
@@ -162,7 +179,7 @@ export const ProvidersProvider: React.FC = ({ children }) => {
     providersSubject.next({
       providers,
       pagination,
-      searchState,
+      searchState: newSearchState,
       isLoading: false,
     });
   };

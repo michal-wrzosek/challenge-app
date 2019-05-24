@@ -17,8 +17,6 @@ export const LoginScreenContainer: React.FC = ({ children }) => {
 
   const { token, isLoading, errorMessage } = auth;
 
-  console.log(isLoading);
-
   if (!token) {
     return (
       <LogInScreen>
