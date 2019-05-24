@@ -6,6 +6,7 @@ import {
   AuthenticationContext,
   FetchAPIFunc,
 } from '../AuthenticationContext/AuthenticationContext';
+import { PaginationType } from '../../types/PaginationType';
 
 export type Provider = {
   _id: string;
@@ -47,10 +48,13 @@ export interface ProvidersSearchState {
   min_average_medicare_payments?: number;
   state?: US_STATES;
   projection?: ProvidersProjection;
+  page?: number;
+  limit?: number;
 }
 
 export interface ProvidersSubjectData {
   providers: Provider[];
+  pagination?: PaginationType;
   searchState: ProvidersSearchState;
   isLoading: boolean;
   errorMessage?: string;
@@ -64,7 +68,7 @@ export type ProvidersGetAllPayload = {
   data: {
     providers: Provider[];
   };
-  pagination: {}; // TODO
+  pagination: PaginationType;
 };
 
 export interface ProvidersContextValues {
@@ -87,16 +91,21 @@ const fetchProviders = async (
   fetchAPI: FetchAPIFunc
 ) => {
   try {
+    const { page } = searchState;
+    const query = { page };
     const response = await fetchAPI<ProvidersGetAllPayload>(
-      `/api/v1/providers`
+      `/api/v1/providers`,
+      {},
+      query
     );
 
     if (!response) return { providers: [] as Provider[] };
 
     const {
       data: { providers },
+      pagination,
     } = response;
-    return { providers };
+    return { providers, pagination };
   } catch (error) {
     console.error(error);
     return { providers: [] as Provider[] };
@@ -115,8 +124,13 @@ export const ProvidersProvider: React.FC = ({ children }) => {
     });
 
     fetchProviders({}, fetchAPI)
-      .then(({ providers }) => {
-        providersSubject.next({ providers, searchState: {}, isLoading: false });
+      .then(({ providers, pagination }) => {
+        providersSubject.next({
+          providers,
+          pagination,
+          searchState: {},
+          isLoading: false,
+        });
       })
       .catch(error => {
         console.error(error);
@@ -132,7 +146,7 @@ export const ProvidersProvider: React.FC = ({ children }) => {
     return () => {
       providersSubject.destroy();
     };
-  }, [isFirst]);
+  }, [isFirst, fetchAPI]);
 
   const providersSearch: ProvidersSearchFunc = async stateFunc => {
     const { searchState } = providersSubject.getValue();
@@ -140,9 +154,17 @@ export const ProvidersProvider: React.FC = ({ children }) => {
 
     providersSubject.next({ providers: [], searchState, isLoading: true });
 
-    const { providers } = await fetchProviders(newSearchState, fetchAPI);
+    const { providers, pagination } = await fetchProviders(
+      newSearchState,
+      fetchAPI
+    );
 
-    providersSubject.next({ providers, searchState, isLoading: false });
+    providersSubject.next({
+      providers,
+      pagination,
+      searchState,
+      isLoading: false,
+    });
   };
 
   return (

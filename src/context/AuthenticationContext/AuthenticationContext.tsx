@@ -1,8 +1,10 @@
 import * as React from 'react';
 import fetch from 'unfetch';
+import qs from 'qs';
 
 import { Subject } from '../../util/reactive/Subject';
 import { API } from '../../configuration/envs';
+import { QueryType } from '../../types/QueryType';
 
 export interface AuthenticationSubjectData {
   email?: string;
@@ -23,7 +25,8 @@ export type AuthenticateFunc = (
 export type LogoutFunc = () => void;
 export type FetchAPIFunc = <T extends object>(
   endpoint: string,
-  options?: RequestInit
+  options?: RequestInit,
+  query?: QueryType
 ) => Promise<T | undefined>;
 
 export interface AuthenticationContextValues {
@@ -173,11 +176,13 @@ export const AuthenticationProvider: React.FC = ({ children }) => {
 
   const fetchAPI: FetchAPIFunc = async <T extends object>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
+    query: QueryType = {}
   ) => {
     const { token } = authenticationSubject.getValue();
     try {
-      const response = await fetch(`${API}${endpoint}`, {
+      const queryString = qs.stringify(query, { addQueryPrefix: true });
+      const response = await fetch(`${API}${endpoint}${queryString}`, {
         ...options,
         headers: {
           'Content-Type': 'application/json',
