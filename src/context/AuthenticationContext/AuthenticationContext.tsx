@@ -16,19 +16,28 @@ interface AuthenticationLocalStorage {
   token: string;
 }
 
-type AuthenticateFunc = (email: string, password: string) => Promise<void>;
-type LogoutFunc = () => void;
+export type AuthenticateFunc = (
+  email: string,
+  password: string
+) => Promise<void>;
+export type LogoutFunc = () => void;
+export type FetchAPIFunc = <T extends object>(
+  endpoint: string,
+  options?: RequestInit
+) => Promise<T | undefined>;
 
 export interface AuthenticationContextValues {
-  authenticationSubject: Subject<AuthenticationSubjectData>;
   authenticate: AuthenticateFunc;
+  logout: LogoutFunc;
+  fetchAPI: FetchAPIFunc;
+  authenticationSubject: Subject<AuthenticationSubjectData>;
 }
 
 const LOCAL_STORAGE_KEY = 'authentication_token';
 
 export const AuthenticationContext = React.createContext<
   AuthenticationContextValues
->({} as any);
+>({} as AuthenticationContextValues);
 
 function getTokenFromLocalStorage(): AuthenticationLocalStorage | undefined {
   try {
@@ -162,9 +171,36 @@ export const AuthenticationProvider: React.FC = ({ children }) => {
     update({ isLoading: false });
   };
 
+  const fetchAPI: FetchAPIFunc = async <T extends object>(
+    endpoint: string,
+    options: RequestInit = {}
+  ) => {
+    const { token } = authenticationSubject.getValue();
+    try {
+      const response = await fetch(`${API}${endpoint}`, {
+        ...options,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+          ...options.headers,
+        },
+      });
+
+      if (response.status === 401) {
+        logout();
+        return undefined;
+      }
+
+      return (await response.json()) as T;
+    } catch (error) {
+      console.error(error);
+      return undefined;
+    }
+  };
+
   return (
     <AuthenticationContext.Provider
-      value={{ authenticate, logout, authenticationSubject }}
+      value={{ authenticate, logout, fetchAPI, authenticationSubject }}
     >
       {children}
     </AuthenticationContext.Provider>
