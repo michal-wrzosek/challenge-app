@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { AuthenticationContext } from '../../context/AuthenticationContext/AuthenticationContext';
-import { useAuthenticationSubscription } from '../../hooks/useAuthentication';
+import { useAuthenticationSubscription } from '../../hooks/useAuthenticationSubscription';
 import { LogInScreen } from '../../components/LogInScreen/LogInScreen';
 import { LogInForm } from '../../components/LogInForm/LogInForm';
 
@@ -16,8 +16,6 @@ export const LoginScreenContainer: React.FC = ({ children }) => {
   }, []);
 
   const { token, isLoading, errorMessage } = auth;
-
-  console.log(isLoading);
 
   if (!token) {
     return (

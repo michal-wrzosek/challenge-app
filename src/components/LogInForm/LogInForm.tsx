@@ -98,6 +98,7 @@ export const LogInForm: React.FC<LogInFormProps> = ({
             <TextInput
               type="email"
               name="email"
+              placeholder="email"
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.email}
@@ -105,6 +106,7 @@ export const LogInForm: React.FC<LogInFormProps> = ({
             <TextInput
               type="password"
               name="password"
+              placeholder="password"
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.password}

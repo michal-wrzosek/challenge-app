@@ -21,12 +21,13 @@ export const fontSizes = [
 export const colors = {
   white: '#FFFFFF',
   grey1: '#f6f6f6',
-  maastrichtBlue: "#011627",
-  tractorRed: "#F71735",
-  tractorRedFadeOut: "#F68392",
-  turquoise: "#41EAD4",
-  babyPowder: "#FDFFFC",
-  brightYellowCrayola: "#FF9F1C",
+  grey2: '#d6d6d6',
+  maastrichtBlue: '#011627',
+  tractorRed: '#F71735',
+  tractorRedFadeOut: '#F68392',
+  turquoise: '#41EAD4',
+  babyPowder: '#FDFFFC',
+  brightYellowCrayola: '#FF9F1C',
 };
 
 export const fontWeights = {
@@ -69,8 +70,30 @@ const theme = (otherTheme: ThemeProps<{}>) => ({
       bgColor: colors.tractorRed,
       color: colors.white,
       borderRadius: 0.5,
-    }
-  }
+    },
+  },
+
+  pageLayout: {
+    bgColor: colors.babyPowder,
+  },
+
+  filters: {
+    wrapper: {
+      bgColor: colors.brightYellowCrayola,
+      borderRadius: 0.5,
+    },
+  },
+
+  searchResults: {
+    item: {
+      bgColor: colors.grey1,
+      borderRadius: 0.5,
+    },
+  },
+
+  skeletons: {
+    bgColor: colors.grey2,
+  },
 });
 
 export default theme;

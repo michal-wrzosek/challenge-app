@@ -4,17 +4,19 @@ import { ThemeProvider } from 'styled-components';
 import theme from '../../styles/theme';
 import { AuthenticationProvider } from '../../context/AuthenticationContext/AuthenticationContext';
 import { LoginScreenContainer } from '../LoginScreenContainer/LoginScreenContainer';
+import { ProvidersPageContainer } from '../ProvidersPageContainer/ProvidersPageContainer';
+import { PageLayout } from '../../components/PageLayout/PageLayout';
 
-const App: React.FC = () => {
+export const AppContainer: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <AuthenticationProvider>
         <LoginScreenContainer>
-          <div>App</div>
+          <PageLayout>
+            <ProvidersPageContainer />
+          </PageLayout>
         </LoginScreenContainer>
       </AuthenticationProvider>
     </ThemeProvider>
   );
 };
-
-export default App;
