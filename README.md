@@ -13,7 +13,7 @@ Demo SPA connected to [REST API](https://github.com/michal-wrzosek/challenge-api
 
 ## Deployment
 
-This app is deployed via Heroku. Master branch is always automatically deplyed to "staging". Then you can manually promote "staging" to "production". Every PR triggers "Review Apps" to start deploying.
+This app is deployed via Heroku. Master branch is always automatically deployed to "staging". Then you can manually promote "staging" to "production". Every PR triggers "Review Apps" to start deploying.
 
 **Production:**
 https://challenge-app-spa-production.herokuapp.com/
@@ -47,7 +47,7 @@ https://travis-ci.com/michal-wrzosek/challenge-app
 
 ## Architecture design
 
-This app was build based on CRA v3 (not ejected) with Typescript. State managment is done by using React Context, React Hooks and Subject class from reactive programming approach (kind of RxJS). I intentially didn't used redux since there is a new trend to move away from redux.
+This app was build based on CRA v3 (not ejected) with Typescript. State management is done by using React Context, React Hooks and Subject class from reactive programming approach (kind of RxJS). I intentionally didn't used redux since there is a new trend to move away from redux.
 
 For visuals I chose Styled Components and Styled System.
 
