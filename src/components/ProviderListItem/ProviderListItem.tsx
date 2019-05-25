@@ -7,6 +7,7 @@ import { themeGet } from 'styled-system';
 import { applyElevationCss } from '../../styles/applyElevation';
 import { Space } from '../Space/Space';
 import { PlaceholderSkeleton } from '../PlaceholderSkeleton/PlaceholderSkeleton';
+import { integerToPrice } from '../../util/parsers/integerToPrice';
 
 export interface ProviderListItemProps {
   provider: ProviderType;
@@ -68,11 +69,11 @@ export const ProviderListItem: React.FC<ProviderListItemProps> = ({
     <Space value={2} />
     <Props>
       <Prop>
-        <Label>Provider ID:</Label>
+        <Label>ID:</Label>
         <Value>{providerId}</Value>
       </Prop>
       <Prop>
-        <Label>Street:</Label>
+        <Label>Street Address:</Label>
         <Value>{street}</Value>
       </Prop>
       <Prop>
@@ -84,32 +85,28 @@ export const ProviderListItem: React.FC<ProviderListItemProps> = ({
         <Value>{state}</Value>
       </Prop>
       <Prop>
-        <Label>Zipcode:</Label>
+        <Label>Zip Code:</Label>
         <Value>{zipcode}</Value>
       </Prop>
       <Prop>
-        <Label>hospitalReferralRegionDesc:</Label>
+        <Label>Hospital Referral Region Description:</Label>
         <Value>{hospitalReferralRegionDesc}</Value>
       </Prop>
       <Prop>
-        <Label>totalDischarges:</Label>
+        <Label>Total Discharges:</Label>
         <Value>{totalDischarges}</Value>
       </Prop>
       <Prop>
-        <Label>avgCoveredCharges:</Label>
-        <Value>{avgCoveredCharges}</Value>
+        <Label>Average Covered Charges:</Label>
+        <Value>{integerToPrice(avgCoveredCharges)}</Value>
       </Prop>
       <Prop>
-        <Label>avgTotalPayments:</Label>
-        <Value>{avgTotalPayments}</Value>
+        <Label>Average Total Payments:</Label>
+        <Value>{integerToPrice(avgTotalPayments)}</Value>
       </Prop>
       <Prop>
-        <Label>avgMedicarePayments:</Label>
-        <Value>{avgMedicarePayments}</Value>
-      </Prop>
-      <Prop>
-        <Label>drgDefinition:</Label>
-        <Value>{drgDefinition}</Value>
+        <Label>Average Medicare Payments:</Label>
+        <Value>{integerToPrice(avgMedicarePayments)}</Value>
       </Prop>
     </Props>
   </Wrapper>

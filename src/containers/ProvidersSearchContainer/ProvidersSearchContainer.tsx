@@ -4,21 +4,31 @@ import { themeGet } from 'styled-system';
 import shallowequal from 'shallowequal';
 import debounce from 'lodash.debounce';
 
-import {
-  ProvidersContext,
-  ProvidersSearchState,
-} from '../../context/ProvidersContext/ProvidersContext';
+import { ProvidersContext } from '../../context/ProvidersContext/ProvidersContext';
 import { MinMaxFilter } from '../../components/MinMaxFilter/MinMaxFilter';
 import { SelectFilter } from '../../components/SelectFilter/SelectFilter';
 import { US_STATES } from '../../types/USStates';
 import { useProvidersSubscription } from '../../hooks/useProvidersSubscription';
 import { Space } from '../../components/Space/Space';
+import { ProvidersSearchState } from '../../context/ProvidersContext/types';
 
 const Wrapper = styled.div`
   padding: ${themeGet('spaces.2')}em;
   border-radius: ${themeGet('filters.wrapper.borderRadius')}em;
   background: ${themeGet('filters.wrapper.bgColor')};
 `;
+
+export const priceToInteger = (price: number | null | undefined) => {
+  if (typeof price === 'undefined') return undefined;
+  return price !== null ? Math.round(price * 100) : null;
+};
+
+export const integerToPrice = (integer: number | null | undefined) => {
+  if (typeof integer === 'undefined') return undefined;
+  return integer !== null
+    ? Number((Math.round(integer) / 100).toFixed(2))
+    : null;
+};
 
 export const ProvidersSearchContainer = () => {
   const { providersSearch, providersSubject } = React.useContext(
@@ -65,15 +75,27 @@ export const ProvidersSearchContainer = () => {
     })),
   ];
 
+  const handlePriceFilterChange = (minProp: string, maxProp: string) => ({
+    min,
+    max,
+  }: {
+    min?: number | null;
+    max?: number | null;
+  }) =>
+    handleFilterChange(minProp, maxProp)({
+      min: priceToInteger(min),
+      max: priceToInteger(max),
+    });
+
   const handleDischargesFilterChange = handleFilterChange(
     'min_discharges',
     'max_discharges'
   );
-  const handleAvgCoveredChargesFilterChange = handleFilterChange(
+  const handleAvgCoveredChargesFilterChange = handlePriceFilterChange(
     'min_average_covered_charges',
     'max_average_covered_charges'
   );
-  const handleAvgMedicarePaymentsDischargesFilterChange = handleFilterChange(
+  const handleAvgMedicarePaymentsDischargesFilterChange = handlePriceFilterChange(
     'min_average_medicare_payments',
     'max_average_medicare_payments'
   );
@@ -90,23 +112,23 @@ export const ProvidersSearchContainer = () => {
   return (
     <Wrapper>
       <MinMaxFilter
-        label="Discharges"
+        label="Discharges ($)"
         valueMin={searchState.min_discharges}
         valueMax={searchState.max_discharges}
         onChange={handleDischargesFilterChange}
       />
       <Space value={4} />
       <MinMaxFilter
-        label="Avg. Covered Charges"
-        valueMin={searchState.min_average_covered_charges}
-        valueMax={searchState.max_average_covered_charges}
+        label="Avg. Covered Charges ($)"
+        valueMin={integerToPrice(searchState.min_average_covered_charges)}
+        valueMax={integerToPrice(searchState.max_average_covered_charges)}
         onChange={handleAvgCoveredChargesFilterChange}
       />
       <Space value={4} />
       <MinMaxFilter
-        label="Avg. Medicare Payments"
-        valueMin={searchState.min_average_medicare_payments}
-        valueMax={searchState.max_average_medicare_payments}
+        label="Avg. Medicare Payments ($)"
+        valueMin={integerToPrice(searchState.min_average_medicare_payments)}
+        valueMax={integerToPrice(searchState.max_average_medicare_payments)}
         onChange={handleAvgMedicarePaymentsDischargesFilterChange}
       />
       <Space value={4} />
