@@ -6,9 +6,11 @@ export type Subscriber<T> = (value: T) => any;
 
 export class Subject<T> {
   counter: number = 0;
+  initialValue: T = null as any;
   value: T = null as any;
   subscribers: { [key: string]: Subscriber<T> } = {};
   constructor(value: T) {
+    this.initialValue = value;
     this.value = value;
   }
 
@@ -30,7 +32,8 @@ export class Subject<T> {
   };
 
   destroy = () => {
-    this.value = null as any;
+    this.value = this.initialValue;
+    this.subscribers = {};
   };
 
   getValue = () => this.value;

@@ -94,6 +94,11 @@ const theme = (otherTheme: ThemeProps<{}>) => ({
   skeletons: {
     bgColor: colors.grey2,
   },
+
+  menu: {
+    bgColor: colors.maastrichtBlue,
+    color: colors.white,
+  },
 });
 
 export default theme;
