@@ -25,6 +25,7 @@ const Label = styled.div`
 
 const Clear = styled.div`
   text-align: right;
+  cursor: pointer;
 `;
 
 const LabelWrapper = styled.div`
