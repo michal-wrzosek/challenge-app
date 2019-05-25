@@ -185,7 +185,6 @@ export const AuthenticationProvider: React.FC = ({ children }) => {
       const response = await fetch(`${API}${endpoint}${queryString}`, {
         ...options,
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
           ...options.headers,
         },

@@ -1,10 +1,8 @@
 import * as React from 'react';
 
 import { Subscriber, Subscription } from '../util/reactive/Subject';
-import {
-  ProvidersContext,
-  ProvidersSubjectData,
-} from '../context/ProvidersContext/ProvidersContext';
+import { ProvidersContext } from '../context/ProvidersContext/ProvidersContext';
+import { ProvidersSubjectData } from '../context/ProvidersContext/types';
 
 export function useProvidersSubscription(
   subscriber: Subscriber<ProvidersSubjectData>,
