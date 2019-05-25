@@ -95,7 +95,7 @@ export const ProvidersListContainer = () => {
       )}
       {pagination && pagination.totalDocs > 0 && (
         <React.Fragment>
-          <Space value={2} />
+          <Space value={4} />
           <Pagination data={pagination} onPageChange={handlePageChange} />
           <Space value={2} />
         </React.Fragment>

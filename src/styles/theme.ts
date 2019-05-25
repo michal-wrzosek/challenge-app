@@ -1,4 +1,5 @@
 import { ThemeProps } from 'styled-components';
+import { breakpointValues } from './breakpoints';
 
 // rem
 export const spaces = [
@@ -41,6 +42,7 @@ const theme = (otherTheme: ThemeProps<{}>) => ({
   fontSizes,
   fontWeights,
   colors,
+  breakpoints: breakpointValues,
 
   textInput: {
     borderColor: colors.grey1,

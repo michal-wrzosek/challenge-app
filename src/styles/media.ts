@@ -5,7 +5,7 @@ import { breakpoints, BREAKPOINT_KEYS, breakpointKeys } from './breakpoints';
 export const media = breakpointKeys.reduce(
   (acc, label) => {
     acc[label] = (first: CSSObject | TemplateStringsArray, ...args: any) => css`
-      @media (max-width: ${breakpoints[label] / 16}em) {
+      @media (min-width: ${breakpoints[label] / 16}em) {
         ${css(first, ...args)}
       }
     `;

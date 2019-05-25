@@ -74,6 +74,11 @@ export const SelectFilter: React.FC<SelectFilter> = ({
             }`,
             boxShadow: applyElevationFunc(1),
             borderRadius: '0.5em',
+            minHeight: '34px',
+          }),
+          dropdownIndicator: styles => ({
+            ...styles,
+            padding: '0 8px',
           }),
         }}
       />
