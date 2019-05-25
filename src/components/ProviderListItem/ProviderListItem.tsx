@@ -8,6 +8,7 @@ import { applyElevationCss } from '../../styles/applyElevation';
 import { Space } from '../Space/Space';
 import { PlaceholderSkeleton } from '../PlaceholderSkeleton/PlaceholderSkeleton';
 import { integerToPrice } from '../../util/parsers/integerToPrice';
+import { media } from '../../styles/media';
 
 export interface ProviderListItemProps {
   provider: ProviderType;
@@ -41,6 +42,28 @@ const Props = styled.div`
   }
 `;
 
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+const Columns = styled.div`
+  display: flex;
+  flex-direction: column;
+  ${media.sm`
+  flex-direction: row;
+
+  ${Column} {
+    margin-right: ${themeGet('spaces.2')}em;
+  }
+
+  ${Column}:last-child {
+    margin-right: 0;
+  }
+  `};
+`;
+
 const Wrapper = styled.div`
   ${applyElevationCss(1)};
   background-color: ${themeGet('searchResults.item.bgColor')};
@@ -67,48 +90,56 @@ export const ProviderListItem: React.FC<ProviderListItemProps> = ({
   <Wrapper>
     <Name>{name}</Name>
     <Space value={2} />
-    <Props>
-      <Prop>
-        <Label>ID:</Label>
-        <Value>{providerId}</Value>
-      </Prop>
-      <Prop>
-        <Label>Street Address:</Label>
-        <Value>{street}</Value>
-      </Prop>
-      <Prop>
-        <Label>City:</Label>
-        <Value>{city}</Value>
-      </Prop>
-      <Prop>
-        <Label>State:</Label>
-        <Value>{state}</Value>
-      </Prop>
-      <Prop>
-        <Label>Zip Code:</Label>
-        <Value>{zipcode}</Value>
-      </Prop>
-      <Prop>
-        <Label>Hospital Referral Region Description:</Label>
-        <Value>{hospitalReferralRegionDesc}</Value>
-      </Prop>
-      <Prop>
-        <Label>Total Discharges:</Label>
-        <Value>{totalDischarges}</Value>
-      </Prop>
-      <Prop>
-        <Label>Average Covered Charges:</Label>
-        <Value>{integerToPrice(avgCoveredCharges)}</Value>
-      </Prop>
-      <Prop>
-        <Label>Average Total Payments:</Label>
-        <Value>{integerToPrice(avgTotalPayments)}</Value>
-      </Prop>
-      <Prop>
-        <Label>Average Medicare Payments:</Label>
-        <Value>{integerToPrice(avgMedicarePayments)}</Value>
-      </Prop>
-    </Props>
+    <Columns>
+      <Column>
+        <Props>
+          <Prop>
+            <Label>ID:</Label>
+            <Value>{providerId}</Value>
+          </Prop>
+          <Prop>
+            <Label>Street Address:</Label>
+            <Value>{street}</Value>
+          </Prop>
+          <Prop>
+            <Label>City:</Label>
+            <Value>{city}</Value>
+          </Prop>
+          <Prop>
+            <Label>State:</Label>
+            <Value>{state}</Value>
+          </Prop>
+          <Prop>
+            <Label>Zip Code:</Label>
+            <Value>{zipcode}</Value>
+          </Prop>
+        </Props>
+      </Column>
+      <Column>
+        <Props>
+          <Prop>
+            <Label>Hospital Referral Region Description:</Label>
+            <Value>{hospitalReferralRegionDesc}</Value>
+          </Prop>
+          <Prop>
+            <Label>Total Discharges:</Label>
+            <Value>{totalDischarges}</Value>
+          </Prop>
+          <Prop>
+            <Label>Average Covered Charges:</Label>
+            <Value>{integerToPrice(avgCoveredCharges)}</Value>
+          </Prop>
+          <Prop>
+            <Label>Average Total Payments:</Label>
+            <Value>{integerToPrice(avgTotalPayments)}</Value>
+          </Prop>
+          <Prop>
+            <Label>Average Medicare Payments:</Label>
+            <Value>{integerToPrice(avgMedicarePayments)}</Value>
+          </Prop>
+        </Props>
+      </Column>
+    </Columns>
   </Wrapper>
 );
 

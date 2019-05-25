@@ -4,10 +4,13 @@ import { themeGet } from 'styled-system';
 import { AuthenticationContext } from '../../context/AuthenticationContext/AuthenticationContext';
 
 const Logo = styled.div``;
-const Logout = styled.div``;
+const Logout = styled.div`
+  cursor: pointer;
+`;
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  width: 100%;
   background: ${themeGet('menu.bgColor')};
   color: ${themeGet('menu.color')};
   font-weight: ${themeGet('fontWeights.bold')};

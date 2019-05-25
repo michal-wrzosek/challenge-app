@@ -11,11 +11,32 @@ import { US_STATES } from '../../types/USStates';
 import { useProvidersSubscription } from '../../hooks/useProvidersSubscription';
 import { Space } from '../../components/Space/Space';
 import { ProvidersSearchState } from '../../context/ProvidersContext/types';
+import { media } from '../../styles/media';
+
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
 
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   padding: ${themeGet('spaces.2')}em;
   border-radius: ${themeGet('filters.wrapper.borderRadius')}em;
   background: ${themeGet('filters.wrapper.bgColor')};
+
+  ${media.sm`
+    flex-direction: row;
+
+    ${Column} {
+      margin-right: ${themeGet('spaces.1')}em;
+    }
+
+    ${Column}:last-child {
+      margin-right: 0;
+    }
+  `};
 `;
 
 export const priceToInteger = (price: number | null | undefined) => {
@@ -111,33 +132,37 @@ export const ProvidersSearchContainer = () => {
 
   return (
     <Wrapper>
-      <MinMaxFilter
-        label="Discharges ($)"
-        valueMin={searchState.min_discharges}
-        valueMax={searchState.max_discharges}
-        onChange={handleDischargesFilterChange}
-      />
-      <Space value={4} />
-      <MinMaxFilter
-        label="Avg. Covered Charges ($)"
-        valueMin={integerToPrice(searchState.min_average_covered_charges)}
-        valueMax={integerToPrice(searchState.max_average_covered_charges)}
-        onChange={handleAvgCoveredChargesFilterChange}
-      />
-      <Space value={4} />
-      <MinMaxFilter
-        label="Avg. Medicare Payments ($)"
-        valueMin={integerToPrice(searchState.min_average_medicare_payments)}
-        valueMax={integerToPrice(searchState.max_average_medicare_payments)}
-        onChange={handleAvgMedicarePaymentsDischargesFilterChange}
-      />
-      <Space value={4} />
-      <SelectFilter
-        label="State"
-        value={searchState.state}
-        options={stateOptions}
-        onChange={handleStateChange}
-      />
+      <Column>
+        <MinMaxFilter
+          label="Discharges ($)"
+          valueMin={searchState.min_discharges}
+          valueMax={searchState.max_discharges}
+          onChange={handleDischargesFilterChange}
+        />
+        <Space value={4} />
+        <MinMaxFilter
+          label="Avg. Covered Charges ($)"
+          valueMin={integerToPrice(searchState.min_average_covered_charges)}
+          valueMax={integerToPrice(searchState.max_average_covered_charges)}
+          onChange={handleAvgCoveredChargesFilterChange}
+        />
+        <Space value={[4, 0]} />
+      </Column>
+      <Column>
+        <MinMaxFilter
+          label="Avg. Medicare Payments ($)"
+          valueMin={integerToPrice(searchState.min_average_medicare_payments)}
+          valueMax={integerToPrice(searchState.max_average_medicare_payments)}
+          onChange={handleAvgMedicarePaymentsDischargesFilterChange}
+        />
+        <Space value={4} />
+        <SelectFilter
+          label="State"
+          value={searchState.state}
+          options={stateOptions}
+          onChange={handleStateChange}
+        />
+      </Column>
     </Wrapper>
   );
 };
